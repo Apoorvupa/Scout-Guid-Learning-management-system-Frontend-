@@ -11,7 +11,7 @@ function AboutSection() {
               className="h-[360px] w-full rounded-2xl object-cover shadow-xl md:h-[420px]"
             />
             <div className="absolute -bottom-6 right-6 hidden rounded-2xl bg-[#7c3aed] px-7 py-6 text-white shadow-xl sm:block">
-              <p className="text-4xl font-extrabold leading-none">10+</p>
+              <p className="text-4xl font-extrabold leading-none">75+</p>
               <p className="mt-1 text-sm opacity-90">Years of Excellence</p>
             </div>
           </div>
@@ -23,15 +23,17 @@ function AboutSection() {
             Who We Are
           </p>
           <h2 className="text-2xl md:text-4xl font-bold text-slate-900 leading-tight mb-5">
-            Empowering Learners <br />
-            Across the Globe
+            Empowering Young Leaders <br />
+            Through Scouting & Guiding
           </h2>
-          <p className="text-slate-600 leading-relaxed mb-7">
-            Our mission is to provide world-class education that is accessible
-            to everyone, everywhere. We believe that learning is a lifelong
-            journey and our platform is built to support you every step of the
-            way.
-          </p>
+          <div className="text-slate-600 leading-relaxed mb-7 space-y-4">
+            <p>
+              Our mission is to develop responsible, disciplined, and skilled young individuals through the principles of Scouting and Guiding. We believe that learning is not limited to classrooms; it happens through real-life experiences, teamwork, leadership, and service to society.
+            </p>
+            <p>
+              Through the Scout Guide BSGUP platform, we aim to train students and volunteers with practical skills, character development, and leadership values so they can contribute positively to their communities and the nation.
+            </p>
+          </div>
 
           <ul className="space-y-4 mb-8">
             <li className="flex items-start gap-3">
@@ -39,7 +41,7 @@ function AboutSection() {
                 check
               </span>
               <span className="text-slate-800 font-medium">
-                Industry-standard curriculum updated quarterly
+                Structured Scout & Guide training programs based on BSG principles
               </span>
             </li>
             <li className="flex items-start gap-3">
@@ -47,7 +49,7 @@ function AboutSection() {
                 check
               </span>
               <span className="text-slate-800 font-medium">
-                Direct mentorship from top 1% industry experts
+                Leadership, discipline, and life-skill development activities
               </span>
             </li>
             <li className="flex items-start gap-3">
@@ -55,7 +57,7 @@ function AboutSection() {
                 check
               </span>
               <span className="text-slate-800 font-medium">
-                Flexible learning schedules for working professionals
+                Flexible learning through online guidance, resources, and mentorship
               </span>
             </li>
           </ul>

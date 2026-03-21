@@ -1,0 +1,124 @@
+import React, { useState, useEffect } from "react";
+import Navbar from './Navbar';
+import Footer from './Footer';
+
+// Dummy data for courses
+const MOCK_COURSES = Array.from({ length: 24 }).map((_, i) => ({
+  id: i + 1,
+  title: `Beginner Course ${i + 1}`,
+  description: "Learn the fundamentals of Scouting & Guiding, teamwork, and leadership skills.",
+  image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=250&fit=crop",
+  duration: "4 Weeks",
+  level: "Beginner"
+}));
+
+const CoursesPage = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const cardsPerPage = 6; // "only X card must be visible", assuming 6 or 10. Let's do 6 for a nice grid.
+
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentCards = MOCK_COURSES.slice(indexOfFirstCard, indexOfLastCard);
+
+  const totalPages = Math.ceil(MOCK_COURSES.length / cardsPerPage);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  return (
+    <div className="pt-24 pb-16 min-h-screen bg-slate-50">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">
+            Available Courses for Beginners
+          </h1>
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            Browse our comprehensive collection of training programs designed to develop leadership, character, and practical skills.
+          </p>
+          <div className="h-1 w-20 bg-[#7c3aed] mx-auto rounded-full mt-6" />
+        </div>
+
+        {/* Courses Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {currentCards.map((course) => (
+            <div key={course.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow border border-slate-100 flex flex-col">
+              <img 
+                src={course.image} 
+                alt={course.title} 
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-6 flex-1 flex flex-col">
+                <div className="flex items-center justify-between mb-3 text-sm text-slate-500 font-medium">
+                  <span className="bg-[#7c3aed]/10 text-[#7c3aed] px-3 py-1 rounded-full">
+                    {course.level}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-base">schedule</span>
+                    {course.duration}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">{course.title}</h3>
+                <p className="text-slate-600 text-sm mb-6 flex-1">
+                  {course.description}
+                </p>
+                <button className="w-full bg-[#7c3aed] text-white py-2.5 rounded-lg font-semibold hover:bg-[#6d28d9] transition-colors">
+                  Enroll Now
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2">
+            <button 
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+                currentPage === 1 
+                  ? 'text-slate-400 bg-slate-100 cursor-not-allowed' 
+                  : 'text-slate-700 hover:bg-slate-200 border border-slate-200'
+              }`}
+            >
+              <span className="material-symbols-outlined">chevron_left</span>
+            </button>
+            
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+                className={`w-10 h-10 rounded-lg font-semibold transition-colors ${
+                  currentPage === index + 1
+                    ? 'bg-[#7c3aed] text-white'
+                    : 'text-slate-700 hover:bg-slate-200 border border-slate-200'
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button 
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+                currentPage === totalPages 
+                  ? 'text-slate-400 bg-slate-100 cursor-not-allowed' 
+                  : 'text-slate-700 hover:bg-slate-200 border border-slate-200'
+              }`}
+            >
+              <span className="material-symbols-outlined">chevron_right</span>
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default CoursesPage;

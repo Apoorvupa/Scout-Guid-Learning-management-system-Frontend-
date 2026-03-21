@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="container footer-container">
         <div className="footer-about">
-          <h2>LMS<span className="highlight">PRO</span></h2>
+          <h2>BSG<span className="highlight">UP</span></h2>
           <p>
             Elevate your professional journey with world-class education
             designed to help you succeed.
@@ -36,7 +36,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        © 2024 LMS Pro Education Platforms. All rights reserved.
+        © 2024 BSGUP Platforms. All rights reserved.
       </div>
     </footer>
   );

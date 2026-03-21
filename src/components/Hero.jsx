@@ -7,20 +7,24 @@ const Hero = () => {
       <div className="hero-overlay"></div>
 
       <div className="hero-content container">
-        <p className="tagline">Unlock Your Career</p>
+        <p className="tagline">Unlock Your Leadership Journey</p>
 
         <h1>
-          Master Your Future with <br />
-          <span className="highlight-text">Expert-Led</span> Courses
+          Build Character and Skills with <br />
+          <span className="highlight-text">Scout & Guide</span> Training
         </h1>
 
-        <p className="hero-description">
-          Join 10,000+ students in mastering industry-standard skills with our
-          curated learning paths and professional growth programs.
-        </p>
+        <div className="hero-description text-lg leading-relaxed flex flex-col gap-3">
+          <p>
+            Join thousands of young learners and volunteers in developing leadership, discipline, and life skills through our BSGUP Scout & Guide training programs. Our platform helps Scouts and Guides grow through structured activities, practical learning, and community service.
+          </p>
+          <p>
+            Become part of a movement that builds confidence, teamwork, and responsibility while preparing you to serve society and lead with integrity.
+          </p>
+        </div>
 
         <div className="hero-buttons">
-          <button className="btn-primary large">Enroll Now</button>
+          <button className="btn-primary large">Explore Courses</button>
           <button className="btn-secondary large">View Catalog</button>
         </div>
       </div>
