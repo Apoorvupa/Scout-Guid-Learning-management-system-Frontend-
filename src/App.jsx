@@ -8,6 +8,7 @@ import AboutSection from './components/AboutSection.jsx'
 import Testimonials from './components/Testimonials.jsx'
 import ContactSection from './components/ContactSection.jsx'
 import AdminPanel from './components/admin/AdminPanel.jsx'
+import StudentPanel from './components/student/StudentPanel.jsx'
 
 function App() {
   const [currentHash, setCurrentHash] = useState(window.location.hash);
@@ -37,14 +38,18 @@ function App() {
   };
   const isAdminPath = window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin/');
   const isAdminRoute = currentHash === '#admin' || currentHash.startsWith('#admin/') || isAdminPath;
+  const isStudentPath = window.location.pathname === '/student' || window.location.pathname.startsWith('/student/');
+  const isStudentRoute = currentHash === '#student' || currentHash.startsWith('#student/') || isStudentPath;
+
+  const isFullScreenApp = isAdminRoute || isStudentRoute;
 
   return (
-    <div className={`min-h-screen bg-white text-slate-800 flex flex-col ${isAdminRoute ? 'h-screen overflow-hidden' : ''}`}>
-      {!isAdminRoute && <Navbar />}
-      <main className={`flex-grow ${isAdminRoute ? 'flex overflow-hidden' : ''}`}>
-        {isAdminRoute ? <AdminPanel /> : renderContent()}
+    <div className={`min-h-screen bg-white text-slate-800 flex flex-col ${isFullScreenApp ? 'h-screen overflow-hidden' : ''}`}>
+      {!isFullScreenApp && <Navbar />}
+      <main className={`flex-grow ${isFullScreenApp ? 'flex overflow-hidden' : ''}`}>
+        {isAdminRoute ? <AdminPanel /> : isStudentRoute ? <StudentPanel /> : renderContent()}
       </main>
-      {!isAdminRoute && <Footer />}
+      {!isFullScreenApp && <Footer />}
     </div>
   )
 }

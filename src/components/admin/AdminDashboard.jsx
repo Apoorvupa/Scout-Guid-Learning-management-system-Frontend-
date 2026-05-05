@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import AdminCourses from './AdminCourses';
 import AdminLessons from './AdminLessons';
 import AdminProfile from './AdminProfile';
+import AdminAnalytics from './AdminAnalytics';
 
 const AdminDashboard = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState('courses');
+  const [activeTab, setActiveTab] = useState('analytics');
 
   return (
     <div className="flex h-screen bg-slate-100 font-sans w-full">
@@ -15,6 +16,12 @@ const AdminDashboard = ({ onLogout }) => {
           <div><span className="text-[#a78bfa]">Admin</span> Portal</div>
         </div>
         <div className="flex-grow py-6 px-4 space-y-2">
+          <button 
+            onClick={() => setActiveTab('analytics')}
+            className={`w-full text-left px-5 py-4 rounded-xl font-semibold transition-all duration-200 flex items-center gap-3 ${activeTab === 'analytics' ? 'bg-[#7c3aed] text-white shadow-lg shadow-violet-500/30 translate-x-1' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'}`}
+          >
+            <span>📊</span> Analytics
+          </button>
           <button 
             onClick={() => setActiveTab('courses')}
             className={`w-full text-left px-5 py-4 rounded-xl font-semibold transition-all duration-200 flex items-center gap-3 ${activeTab === 'courses' ? 'bg-[#7c3aed] text-white shadow-lg shadow-violet-500/30 translate-x-1' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'}`}
@@ -45,6 +52,7 @@ const AdminDashboard = ({ onLogout }) => {
       <div className="flex-grow overflow-y-auto relative w-full h-full">
         {/* Dynamic header could go here, omitting for now to let components own their headers */}
         <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            {activeTab === 'analytics' && <AdminAnalytics />}
             {activeTab === 'courses' && <AdminCourses />}
             {activeTab === 'lessons' && <AdminLessons />}
             {activeTab === 'profile' && <AdminProfile />}

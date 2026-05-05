@@ -10,7 +10,7 @@ const AdminLessons = () => {
   const [editingLesson, setEditingLesson] = useState(null);
   
   const [formData, setFormData] = useState({
-    title: '', description: '', youtube_url: '', order: 1
+    title: '', description: '', youtube_url: '', order: 1, sub_lessons: []
   });
 
   useEffect(() => {
@@ -62,17 +62,36 @@ const AdminLessons = () => {
         title: lesson.title,
         description: lesson.description,
         youtube_url: lesson.youtube_url,
-        order: lesson.order
+        order: lesson.order,
+        sub_lessons: lesson.sub_lessons || []
       });
     } else {
       setEditingLesson(null);
-      setFormData({ title: '', description: '', youtube_url: '', order: lessons.length + 1 });
+      setFormData({ title: '', description: '', youtube_url: '', order: lessons.length + 1, sub_lessons: [] });
     }
     setShowForm(true);
   };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubLessonChange = (index, field, value) => {
+    const newSubLessons = [...formData.sub_lessons];
+    newSubLessons[index][field] = value;
+    setFormData({ ...formData, sub_lessons: newSubLessons });
+  };
+
+  const addSubLesson = () => {
+    setFormData({
+      ...formData,
+      sub_lessons: [...formData.sub_lessons, { title: '', youtube_url: '', description: '' }]
+    });
+  };
+
+  const removeSubLesson = (index) => {
+    const newSubLessons = formData.sub_lessons.filter((_, i) => i !== index);
+    setFormData({ ...formData, sub_lessons: newSubLessons });
   };
 
   const handleSubmit = async (e) => {
@@ -84,7 +103,8 @@ const AdminLessons = () => {
       title: formData.title,
       description: formData.description,
       youtube_url: formData.youtube_url,
-      order: parseInt(formData.order, 10)
+      order: parseInt(formData.order, 10),
+      sub_lessons: formData.sub_lessons
     };
     
     if (isEditing) {
@@ -166,6 +186,37 @@ const AdminLessons = () => {
             <div className="md:col-span-2">
               <label className="block text-sm font-semibold text-slate-700 mb-1">Description</label>
               <textarea name="description" value={formData.description} onChange={handleChange} className="w-full border border-slate-300 p-2.5 rounded h-24 focus:ring-2 focus:ring-[#7c3aed] focus:outline-none"></textarea>
+            </div>
+            
+            <div className="md:col-span-2 mt-4 pt-4 border-t border-slate-200">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="text-lg font-bold text-slate-700">Sub Lessons</h4>
+                <button type="button" onClick={addSubLesson} className="bg-slate-100 text-[#7c3aed] px-4 py-2 rounded-lg font-medium hover:bg-slate-200 transition-colors border border-slate-200">
+                  + Add Sub Lesson
+                </button>
+              </div>
+              {formData.sub_lessons.map((sl, idx) => (
+                <div key={idx} className="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-4 relative">
+                  <button type="button" onClick={() => removeSubLesson(idx)} className="absolute top-2 right-2 text-rose-500 hover:text-rose-700 font-bold bg-rose-100 w-8 h-8 rounded-full flex items-center justify-center">×</button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Sub Lesson Title</label>
+                      <input type="text" value={sl.title} onChange={(e) => handleSubLessonChange(idx, 'title', e.target.value)} required className="w-full border border-slate-300 p-2 rounded focus:ring-2 focus:ring-[#7c3aed] focus:outline-none text-sm" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">YouTube URL</label>
+                      <input type="url" value={sl.youtube_url} onChange={(e) => handleSubLessonChange(idx, 'youtube_url', e.target.value)} required className="w-full border border-slate-300 p-2 rounded focus:ring-2 focus:ring-[#7c3aed] focus:outline-none text-sm" />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Description</label>
+                      <textarea value={sl.description} onChange={(e) => handleSubLessonChange(idx, 'description', e.target.value)} className="w-full border border-slate-300 p-2 rounded h-16 focus:ring-2 focus:ring-[#7c3aed] focus:outline-none text-sm"></textarea>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {formData.sub_lessons.length === 0 && (
+                <p className="text-sm text-slate-500 italic">No sub lessons added yet.</p>
+              )}
             </div>
             <div className="md:col-span-2 flex justify-end gap-3 mt-4">
               <button type="button" onClick={() => setShowForm(false)} className="bg-slate-200 text-slate-800 px-6 py-2.5 rounded font-medium hover:bg-slate-300 transition-colors">Cancel</button>

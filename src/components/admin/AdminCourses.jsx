@@ -9,7 +9,7 @@ const AdminCourses = () => {
   
   const [formData, setFormData] = useState({
     title: '', description: '', 
-    priceAmount: '', priceCurrency: '₹', 
+    priceAmount: '', priceCurrency: '₹', isFree: false,
     durationValue: '', durationUnit: 'months', 
     durationHours: '', durationMinutes: '', durationSeconds: '',
     department: 'training', user: '1'
@@ -36,7 +36,8 @@ const AdminCourses = () => {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
   };
   const handleFileChange = (e) => {
     if(e.target.files && e.target.files.length > 0) {
@@ -76,6 +77,7 @@ const AdminCourses = () => {
         description: course.description,
         priceAmount: course.price,
         priceCurrency: '₹', // Assuming existing amounts are INR for now
+        isFree: course.price == 0 || course.price == '0' || course.price == '0.00',
         durationValue: durVal,
         durationUnit: durUnit,
         durationHours: dHours,
@@ -89,7 +91,7 @@ const AdminCourses = () => {
     } else {
       setEditingCourse(null);
       setFormData({
-        title: '', description: '', priceAmount: '', priceCurrency: '₹', durationValue: '', durationUnit: 'months', durationHours: '', durationMinutes: '', durationSeconds: '', department: 'training', user: '1'
+        title: '', description: '', priceAmount: '', priceCurrency: '₹', isFree: false, durationValue: '', durationUnit: 'months', durationHours: '', durationMinutes: '', durationSeconds: '', department: 'training', user: '1'
       });
     }
     setFile(null);
@@ -103,7 +105,7 @@ const AdminCourses = () => {
     const fd = new FormData();
     fd.append('title', formData.title);
     fd.append('description', formData.description);
-    fd.append('price', formData.priceAmount); // Assuming backend expects pure amount
+    fd.append('price', formData.isFree ? 0 : formData.priceAmount); // Assuming backend expects pure amount
     // If backend wanted currency, we'd do fd.append('currency', formData.priceCurrency);
     
     let finalDuration = '';
@@ -186,14 +188,22 @@ const AdminCourses = () => {
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1">Price</label>
-              <div className="flex">
-                <select name="priceCurrency" value={formData.priceCurrency} onChange={handleChange} className="border border-slate-300 border-r-0 rounded-l p-2.5 bg-slate-50 focus:ring-2 focus:ring-[#7c3aed] focus:outline-none focus:z-10">
-                  <option value="₹">Rupees (₹)</option>
-                  <option value="$">Dollars ($)</option>
-                  <option value="€">Euros (€)</option>
-                  <option value="£">Pounds (£)</option>
-                </select>
-                <input type="number" name="priceAmount" placeholder="Amount" value={formData.priceAmount} onChange={handleChange} required className="w-full border border-slate-300 p-2.5 rounded-r focus:ring-2 focus:ring-[#7c3aed] focus:outline-none" />
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" name="isFree" id="isFree" checked={formData.isFree} onChange={handleChange} className="w-4 h-4 text-[#7c3aed] focus:ring-[#7c3aed] border-slate-300 rounded" />
+                  <label htmlFor="isFree" className="text-sm font-medium text-slate-700">Free Course</label>
+                </div>
+                {!formData.isFree && (
+                  <div className="flex">
+                    <select name="priceCurrency" value={formData.priceCurrency} onChange={handleChange} className="border border-slate-300 border-r-0 rounded-l p-2.5 bg-slate-50 focus:ring-2 focus:ring-[#7c3aed] focus:outline-none focus:z-10">
+                      <option value="₹">Rupees (₹)</option>
+                      <option value="$">Dollars ($)</option>
+                      <option value="€">Euros (€)</option>
+                      <option value="£">Pounds (£)</option>
+                    </select>
+                    <input type="number" name="priceAmount" placeholder="Amount" value={formData.priceAmount} onChange={handleChange} required={!formData.isFree} className="w-full border border-slate-300 p-2.5 rounded-r focus:ring-2 focus:ring-[#7c3aed] focus:outline-none" />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -274,7 +284,7 @@ const AdminCourses = () => {
                 <div className="flex justify-between items-center text-sm font-semibold bg-slate-50 p-2 rounded border border-slate-100">
                   <span className="text-[#7c3aed]">
                     {/* Display standard Rupee symbol format for display regardless of currency option missing from backend string */}
-                    ₹{course.price}
+                    {course.price == 0 || course.price == '0' || course.price == '0.00' ? 'Free' : `₹${course.price}`}
                   </span>
                   <span className="text-slate-500">{course.duration}</span>
                 </div>

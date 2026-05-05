@@ -149,6 +149,7 @@ const Navbar = () => {
         // success
         setIsLoggedIn(true);
         localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('isStudentLoggedIn', 'true');
         window.dispatchEvent(new Event('authChange'));
         if (authType === 'login' && !formData.name) {
           // just a fallback if name is not set
@@ -157,6 +158,7 @@ const Navbar = () => {
         setIsRegisterOpen(false);
         setIsLoginOpen(false);
         setOtpMode(false);
+        window.location.hash = '#student';
       } else {
         alert("Invalid OTP or error occurred.");
       }
@@ -171,9 +173,11 @@ const Navbar = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isStudentLoggedIn');
     window.dispatchEvent(new Event('authChange'));
     setFormData({ name: '', email: '', mobile_number: '' });
     setLoginMobile('');
+    window.location.hash = '#';
   };
 
   // inline component replaced
@@ -207,11 +211,13 @@ const Navbar = () => {
                 <button className="btn-primary flex items-center gap-2">
                   Hi, {formData.name ? formData.name.split(' ')[0] : 'Student'} ▼
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-30 border border-slate-200 hidden group-hover:block">
-                  <a href="#" onClick={(e) => { e.preventDefault(); alert("Profile page is under construction!"); }} className="block px-4 py-2 text-sm text-slate-900 hover:bg-slate-100">My Profile</a>
-                  <a href="#" onClick={(e) => { e.preventDefault(); alert("Payment history is under construction!"); }} className="block px-4 py-2 text-sm text-slate-900 hover:bg-slate-100">Payment History</a>
-                  <a href="#" onClick={(e) => { e.preventDefault(); alert("My courses dashboard is under construction!"); }} className="block px-4 py-2 text-sm text-slate-900 hover:bg-slate-100">My Courses</a>
-                  <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</button>
+                <div className="absolute right-0 top-full pt-2 w-48 z-30 hidden group-hover:block">
+                  <div className="bg-white rounded-lg shadow-lg py-2 border border-slate-200">
+                    <a href="#student" className="block px-4 py-2 text-sm text-slate-900 hover:bg-slate-100">My Profile</a>
+                    <a href="#student" className="block px-4 py-2 text-sm text-slate-900 hover:bg-slate-100">Payment History</a>
+                    <a href="#student" className="block px-4 py-2 text-sm text-slate-900 hover:bg-slate-100">Student Dashboard</a>
+                    <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</button>
+                  </div>
                 </div>
               </div>
             )}

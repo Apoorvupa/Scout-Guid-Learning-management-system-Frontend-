@@ -145,15 +145,17 @@ const CoursesPage = () => {
                   </p>
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-lg font-bold text-[#7c3aed]">
-                      ₹{course.price || 'Free'}
+                      {course.price == 0 || course.price == '0' || course.price == '0.00' ? 'Free' : `₹${course.price}`}
                     </span>
                   </div>
                   {isLoggedIn ? (
                     <button 
-                      onClick={() => alert(`Redirecting to secure payment checkout for ${course.title} (₹${course.price || 0})`)}
+                      onClick={() => {
+                        window.location.hash = '#student';
+                      }}
                       className="w-full bg-[#10b981] text-white py-2.5 rounded-lg font-semibold hover:bg-[#059669] transition-colors"
                     >
-                      Buy Now
+                      {course.price == 0 || course.price == '0' || course.price == '0.00' ? 'Start Free Course' : 'Enroll & Pay'}
                     </button>
                   ) : (
                     <button 

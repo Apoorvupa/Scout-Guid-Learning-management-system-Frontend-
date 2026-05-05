@@ -1,0 +1,33 @@
+import React, { useState, useEffect } from 'react';
+import StudentLogin from './StudentLogin';
+import StudentDashboard from './StudentDashboard';
+
+const StudentPanel = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const studentAuth = localStorage.getItem('isStudentLoggedIn');
+    if (studentAuth === 'true') {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    localStorage.setItem('isStudentLoggedIn', 'true');
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('isStudentLoggedIn');
+    window.location.hash = '#';
+  };
+
+  if (isLoggedIn) {
+    return <StudentDashboard onLogout={handleLogout} />;
+  }
+
+  return <StudentLogin onLoginSuccess={handleLoginSuccess} />;
+};
+
+export default StudentPanel;
